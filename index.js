@@ -30,7 +30,8 @@ io.on('connection', socket => {
   socket.on('disconnect', reason => {
     console.log("Disconneted.")
   });
-  socket.on('message', text => {
-    console.log(text)
+  socket.on('message', data => {
+    socket.emit('message', data)
+    console.log(data)
   });
 });

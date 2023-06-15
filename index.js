@@ -1,34 +1,36 @@
-const http = require("http");
-const express = require("express");
-const socketio = require("socket.io");
+const http = require("http")
+const express = require("express")
+const socketio = require("socket.io")
+const { execSync } = require('child_process')
+const { createHash } = require('crypto')
 
 const app = express();
+
+app.get("/pull/:key", (req, res) => {
+  const keySha = createHash('sha256').update(req.params.key).digest('hex')
+  if(keySha !== "b29c483a0c94d740962ed5cf804a9cfe5af1cd1e52b7a6d50c624982565a60a4") {
+    res.send("Missing key")
+    return
+  }
+  execSync("git pull")
+  res.send("OK")
+})
+
 const httpserver = http.Server(app);
-const io = socketio(httpserver);
+const io = socketio(httpserver, {
+  cors: {
+    origin: "*"
+  }
+});
 
 httpserver.listen(3000);
 
-var rooms = [];
-var usernames = [];
-
-io.on('connection', function(socket){
-
-  socket.on("join", function(room, username){
-    if (username != ""){
-      rooms[socket.id] = room;
-      usernames[socket.id] = username;
-      socket.leaveAll();
-      socket.join(room);
-      io.in(room).emit("recieve", "Server : " + username + " has entered the chat.");
-      socket.emit("join", room);
-    }
-  })
-
-  socket.on("send", function(message){
-    io.in(rooms[socket.id]).emit("recieve", usernames[socket.id] +" : " + message);
-  })
-
-  socket.on("recieve", function(message){
-    socket.emit("recieve", message);
-  })
-})
+io.on('connection', socket => {
+  console.log("conn")
+  socket.on('disconnect', reason => {
+    console.log("Disconneted.")
+  });
+  socket.on('message', text => {
+    console.log(text)
+  });
+});

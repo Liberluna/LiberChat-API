@@ -31,7 +31,7 @@ io.on('connection', socket => {
     console.log("Disconneted.")
   });
   socket.on('message', data => {
-    socket.emit('message', data)
+    io.emit('message', data)
     console.log(data)
   });
 });

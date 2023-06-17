@@ -31,12 +31,13 @@ io.on('connection', socket => {
     console.log("Disconneted.")
   });
   socket.on('message', data => {
+    if(data.type === "enter"){
+      io.emit('message', {
+        body: "Joined darekasan"
+      })
+    }
     io.emit('message', data)
     io.to(data.room).emit('message', data)
-    console.log(data)
-  });
-  socket.on('a', data => {
-    io.emit('message', data)
     console.log(data)
   });
 });

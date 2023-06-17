@@ -33,6 +33,7 @@ io.on('connection', socket => {
   socket.on('join', data => {
     data.room = data.room ? data.room : "main" // Main room
     socket.join(data.room);
+    console.log("join", data.room)
   })
   socket.on('message', data => {
     io.emit('message', data)

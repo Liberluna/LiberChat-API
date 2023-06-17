@@ -33,9 +33,7 @@ io.on('connection', socket => {
   });
   socket.on('message', data => {
     if(data.type === "enter"){
-      io.emit('message', {
-        body: "Joined darekasan"
-      })
+      socket.join(data.room)
     }
     io.emit('message', data)
     io.to(data.room).emit('message', data)

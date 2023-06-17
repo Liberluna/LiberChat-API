@@ -30,12 +30,13 @@ io.on('connection', socket => {
   socket.on('disconnect', reason => {
     console.log("Disconneted.")
   });
-  socket.on('a', data => {
-    console.log(data)
-  })
   socket.on('message', data => {
     io.emit('message', data)
     io.to(data.room).emit('message', data)
+    console.log(data)
+  });
+  socket.on('a', data => {
+    io.emit('message', data)
     console.log(data)
   });
 });

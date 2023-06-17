@@ -30,10 +30,10 @@ io.on('connection', socket => {
   socket.on('disconnect', reason => {
     console.log("Disconneted.")
   });
-  socket.on('join', data => {
+  socket.on('enter', data => {
+    console.log("join", data.room)
     data.room = data.room ? data.room : "main" // Main room
     socket.join(data.room);
-    console.log("join", data.room)
   })
   socket.on('message', data => {
     io.emit('message', data)

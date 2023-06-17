@@ -13,6 +13,7 @@ app.get("/pull/:key", (req, res) => {
     return
   }
   execSync("git pull")
+  process.exit(0)
   res.send("OK")
 })
 

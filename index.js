@@ -31,9 +31,10 @@ io.on('connection', socket => {
     console.log("Disconneted.")
   });
   socket.on('enter', data => {
-    console.log("join", data.room)
-    data.room = data.room ? data.room : "main" // Main room
-    socket.join(data.room);
+    console.log(data)
+    io.emit('message', {
+      body: "a"
+    })
   })
   socket.on('message', data => {
     io.emit('message', data)

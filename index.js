@@ -35,7 +35,6 @@ io.on('connection', socket => {
     if(data.type === "enter"){
       socket.join(data.room)
     }
-    io.emit('message', data)
     io.to(data.room).emit('message', data)
     console.log(data)
   });
